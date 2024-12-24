@@ -14,6 +14,15 @@ import { Media } from './collections/Media'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Перевірки на undefined або встановлення дефолтних значень
+const databaseUri = process.env.DATABASE_URI || ''
+const payloadSecret = process.env.PAYLOAD_SECRET || ''
+const s3Bucket = process.env.S3_BUCKET || ''
+const s3AccessKeyId = process.env.S3_ACCESS_KEY_ID || ''
+const s3SecretAccessKey = process.env.S3_SECRET_ACCESS_KEY || ''
+const s3Region = process.env.S3_REGION || ''
+const s3Endpoint = process.env.S3_ENDPOINT || 'http://localhost'
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -23,13 +32,13 @@ export default buildConfig({
   },
   collections: [Users, Media],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: payloadSecret,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   // database-adapter-config-start
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    url: databaseUri,
   }),
   // database-adapter-config-end
   sharp,
@@ -42,14 +51,14 @@ export default buildConfig({
           prefix: 'media',
         },
       },
-      bucket: process.env.S3_BUCKET,
+      bucket: s3Bucket,
       config: {
         credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID,
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+          accessKeyId: s3AccessKeyId,
+          secretAccessKey: s3SecretAccessKey,
         },
-        region: process.env.S3_REGION,
-        endpoint: process.env.S3_ENDPOINT,
+        region: s3Region,
+        endpoint: s3Endpoint,
         forcePathStyle: true,
         // ... Other S3 configuration
       },
