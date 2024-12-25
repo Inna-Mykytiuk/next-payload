@@ -110,6 +110,44 @@ export interface Page {
   id: string;
   name: string;
   slug: string;
+  layout?:
+    | (
+        | {
+            title: string;
+            subtitle: string;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'cover';
+          }
+        | {
+            content: {
+              root: {
+                type: string;
+                children: {
+                  type: string;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'richtext';
+          }
+        | {
+            image: string | Media;
+            caption?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'image';
+          }
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -215,6 +253,33 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
+  layout?:
+    | T
+    | {
+        cover?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              id?: T;
+              blockName?: T;
+            };
+        richtext?:
+          | T
+          | {
+              content?: T;
+              id?: T;
+              blockName?: T;
+            };
+        image?:
+          | T
+          | {
+              image?: T;
+              caption?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
 }

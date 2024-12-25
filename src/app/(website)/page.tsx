@@ -1,3 +1,9 @@
 export default function Home() {
-  return <div className="p-4 bg-blue-400 text-xl text-black/50">Hello world!</div>
+  return (
+    <section className="p-4 text-xl text-black/50 h-full">
+      <div className="container">
+        <p>Hello world!</p>
+      </div>
+    </section>
+  )
 }
