@@ -141,7 +141,6 @@ export interface Page {
           }
         | {
             image: string | Media;
-            caption?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'image';
@@ -275,7 +274,6 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               image?: T;
-              caption?: T;
               id?: T;
               blockName?: T;
             };

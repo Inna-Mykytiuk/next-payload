@@ -12,7 +12,6 @@ export const Cover: Block = {
     {
       name: 'subtitle',
       label: 'Subtitle',
-      // type: 'text',
       type: 'textarea',
       required: true,
     },

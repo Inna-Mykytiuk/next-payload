@@ -10,10 +10,10 @@ export const Image: Block = {
       relationTo: 'media',
       required: true,
     },
-    {
-      name: 'caption',
-      label: 'Caption',
-      type: 'text',
-    },
+    // {
+    //   name: 'caption',
+    //   label: 'Caption',
+    //   type: 'text',
+    // },
   ],
 }
