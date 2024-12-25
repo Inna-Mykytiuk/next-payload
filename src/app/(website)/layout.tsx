@@ -1,11 +1,20 @@
-export default function layout({
+import '@/styles/globals.css'
+
+import HeaderServer from '@/blocks/global/Header/Server'
+import FooterServer from '@/blocks/global/Footer/Server'
+
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <div>
-      <body>{children}</body>
-    </div>
+    <html lang="en">
+      <body>
+        <HeaderServer />
+        {children}
+        <FooterServer />
+      </body>
+    </html>
   )
 }
