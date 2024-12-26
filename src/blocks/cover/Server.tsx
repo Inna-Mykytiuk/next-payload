@@ -1,10 +1,19 @@
 import React from 'react'
 
-export default function CoverBlockServer({ title, subtitle }: { title: string; subtitle: string }) {
+export type CoverBlockProps = {
+  title: string
+  subtitle: string
+  id?: string | null
+  blockName?: string | null
+  blockType: 'cover'
+}
+const CoverBlockServer: React.FC<CoverBlockProps> = ({ title, subtitle }) => {
   return (
-    <div className="container">
-      <h1 className="text-3xl font-bold">{title}</h1>
-      <p className="text-xl">{subtitle}</p>
+    <div>
+      <h1>{title}</h1>
+      <p>{subtitle}</p>
     </div>
   )
 }
+
+export default CoverBlockServer

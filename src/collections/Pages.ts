@@ -26,6 +26,7 @@ export const Pages: CollectionConfig = {
       label: 'Layout',
       type: 'blocks',
       blocks: [Cover, RichText, Image],
+      required: true,
     },
   ],
 }
