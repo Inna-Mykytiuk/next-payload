@@ -1,13 +1,7 @@
 import React from 'react'
+import { CoverType } from 'commonTypes/types'
 
-export type CoverBlockProps = {
-  title: string
-  subtitle: string
-  id?: string | null
-  blockName?: string | null
-  blockType: 'cover'
-}
-const CoverBlockServer: React.FC<CoverBlockProps> = ({ title, subtitle }) => {
+const CoverBlockServer: React.FC<CoverType> = ({ title, subtitle }) => {
   return (
     <div>
       <h1>{title}</h1>

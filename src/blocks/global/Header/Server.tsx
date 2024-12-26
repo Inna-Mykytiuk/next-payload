@@ -16,14 +16,16 @@ export default async function HeaderServer() {
       <div className="container">
         <div className="flex items-center justify-between">
           {logoSrc && (
-            <Image
-              src={logoSrc}
-              alt={logoAlt}
-              priority
-              className="object-contain w-[120px] h-auto"
-              width={120}
-              height={50}
-            />
+            <div className="w-[120px] h-[40px]">
+              <Image
+                src={logoSrc}
+                alt={logoAlt}
+                priority
+                className="object-contain w-full h-full"
+                width={120}
+                height={40}
+              />
+            </div>
           )}
 
           <div className="flex gap-4">

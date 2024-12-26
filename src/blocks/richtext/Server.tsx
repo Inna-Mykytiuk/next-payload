@@ -1,27 +1,7 @@
 import React, { JSX } from 'react'
+import { RichTextType } from 'commonTypes/types'
 
-export type RichTextBlockProps = {
-  content: {
-    root: {
-      children: Array<{
-        type: 'text' | 'heading' | 'paragraph' | string
-        tag?: string
-        text?: string
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        children?: Array<any>
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        [key: string]: any
-      }>
-      direction: string
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
-      indent: number
-      type: string
-      version: number
-    }
-  }
-}
-
-const RichTextBlockServer: React.FC<RichTextBlockProps> = ({ content }) => {
+const RichTextBlockServer: React.FC<RichTextType> = ({ content }) => {
   if (!content?.root?.children) {
     console.warn('No content found in richtext block')
     return null

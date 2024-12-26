@@ -54,8 +54,12 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
   }
 
   return (
-    <article className="pt-16 pb-24">
-      <RenderBlocks blocks={page.layout} />
-    </article>
+    <section className="w-full h-full pt-[100px]">
+      <div className="container">
+        <div className="flex items-center">
+          <RenderBlocks blocks={page.layout} />
+        </div>
+      </div>
+    </section>
   )
 }

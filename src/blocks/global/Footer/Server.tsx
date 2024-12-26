@@ -10,20 +10,12 @@ export default async function FooterServer() {
 
   const logoSrc = typeof footer?.logo === 'string' ? footer.logo : footer?.logo?.url || ''
   const logoAlt = typeof footer?.logo !== 'string' && footer?.logo?.alt ? footer.logo.alt : 'logo'
+
   return (
     <footer className="bg-blue-300 w-full py-4 mt-auto">
       <div className="container">
         <div className="flex items-center justify-between">
-          {logoSrc && (
-            <Image
-              src={logoSrc}
-              alt={logoAlt}
-              priority
-              className="object-contain w-[120px] h-auto"
-              width={120}
-              height={50}
-            />
-          )}
+          <p>{footer?.copyright}</p>
 
           <div className="flex gap-4">
             {footer?.nav?.map((item) => (
@@ -33,7 +25,18 @@ export default async function FooterServer() {
             ))}
           </div>
 
-          <p>{footer?.copyright}</p>
+          {logoSrc && (
+            <div className="w-[120px] h-[40px]">
+              <Image
+                src={logoSrc}
+                alt={logoAlt}
+                priority
+                className="object-contain w-full h-full"
+                width={120}
+                height={40}
+              />
+            </div>
+          )}
         </div>
       </div>
     </footer>
