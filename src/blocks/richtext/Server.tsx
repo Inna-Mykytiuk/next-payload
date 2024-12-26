@@ -1,13 +1,15 @@
 import React, { JSX } from 'react'
 import { RichTextType } from 'commonTypes/types'
 
-const RichTextBlockServer: React.FC<RichTextType> = ({ content }) => {
+interface RichTextBlockServerProps extends RichTextType {
+  className?: string // Додано проп для стилів
+}
+
+const RichTextBlockServer: React.FC<RichTextBlockServerProps> = ({ content, className }) => {
   if (!content?.root?.children) {
     console.warn('No content found in richtext block')
     return null
   }
-
-  // console.log('Root children:', content.root.children)
 
   const renderChildren = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,7 +47,7 @@ const RichTextBlockServer: React.FC<RichTextType> = ({ content }) => {
       .filter((element) => element !== null) as JSX.Element[]
   }
 
-  return <div className="richtext">{renderChildren(content.root.children)}</div>
+  return <div className={className || 'richtext'}>{renderChildren(content.root.children)}</div>
 }
 
 export default RichTextBlockServer
