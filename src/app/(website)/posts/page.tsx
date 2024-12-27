@@ -13,6 +13,8 @@ async function fetchPosts(): Promise<PostType[]> {
     limit: 1000,
   })
 
+  console.log('Fetched posts:', result.docs)
+
   return result.docs || []
 }
 
@@ -35,6 +37,12 @@ export default async function PostsPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {posts.map((post) => {
             const imageUrl = typeof post.image === 'string' ? post.image : post.image?.url || ''
+            const postDate = new Date(post.createdAt).toLocaleDateString('uk-UA', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
+
             return (
               <div key={post.id} className="border rounded-lg p-4">
                 <h2 className="text-xl font-bold">{post.title}</h2>
@@ -48,6 +56,7 @@ export default async function PostsPage() {
                   />
                 )}
                 <p className="text-gray-600">{post.author}</p>
+                <p className="text-gray-500 text-sm">{postDate}</p>
                 <RichTextBlockServer
                   content={post.content}
                   className="text-sm text-gray-500 mt-2"
