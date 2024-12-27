@@ -24,10 +24,20 @@ const RichTextBlockServer: React.FC<RichTextBlockServerProps> = ({ content, clas
         }
 
         if (type === 'heading' && tag) {
-          return (
-            <h1 key={index} className="font-bold text-xl my-2">
-              {nestedChildren ? renderChildren(nestedChildren) : null}
-            </h1>
+          const headingLevels: Record<'h1' | 'h2' | 'h3' | 'h4', string> = {
+            h1: 'font-bold text-2xl my-4',
+            h2: 'font-semibold text-xl my-3',
+            h3: 'font-medium text-lg my-2',
+            h4: 'font-medium text-md my-1',
+          }
+
+          const headingClass =
+            headingLevels[tag as keyof typeof headingLevels] || 'font-bold text-xl my-2'
+
+          return React.createElement(
+            tag,
+            { key: index, className: headingClass },
+            nestedChildren ? renderChildren(nestedChildren) : null,
           )
         }
 
@@ -36,6 +46,31 @@ const RichTextBlockServer: React.FC<RichTextBlockServerProps> = ({ content, clas
             <p key={index} className="my-4">
               {nestedChildren ? renderChildren(nestedChildren) : null}
             </p>
+          )
+        }
+
+        if (type === 'list' && tag) {
+          if (tag === 'ul') {
+            return (
+              <ul key={index} className="list-disc pl-5 my-2">
+                {nestedChildren ? renderChildren(nestedChildren) : null}
+              </ul>
+            )
+          }
+          if (tag === 'ol') {
+            return (
+              <ol key={index} className="list-decimal pl-5 my-2">
+                {nestedChildren ? renderChildren(nestedChildren) : null}
+              </ol>
+            )
+          }
+        }
+
+        if (type === 'list-item') {
+          return (
+            <li key={index} className="my-1">
+              {nestedChildren ? renderChildren(nestedChildren) : null}
+            </li>
           )
         }
 

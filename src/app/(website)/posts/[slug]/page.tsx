@@ -24,7 +24,6 @@ interface PostPageProps {
 
 // Використовуємо асинхронне завантаження даних
 export default async function PostPage({ params }: PostPageProps) {
-  // Чекаємо доступу до params і виконуємо запит
   const { slug } = await params
   if (!slug) {
     throw new Error('Slug not found in params')
@@ -43,7 +42,7 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   const imageUrl = typeof post.image === 'string' ? post.image : post.image?.url || ''
-  const postDate = new Date(post.createdAt).toLocaleDateString('uk-UA', {
+  const postDate = new Date(post.createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

@@ -38,7 +38,7 @@ export default async function PostsPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {posts.map((post) => {
             const imageUrl = typeof post.image === 'string' ? post.image : post.image?.url || ''
-            const postDate = new Date(post.createdAt).toLocaleDateString('uk-UA', {
+            const postDate = new Date(post.createdAt).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',

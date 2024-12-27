@@ -41,8 +41,7 @@ const config: Config = {
         scale: 'scale 0.7s ease infinite alternate',
       },
       fontFamily: {
-        comforta: ['Comfortaa', 'sans-serif'],
-        contrail: ['Contrail One', 'sans-serif'],
+        unbound: ['Unbounded', 'serif'],
         roboto: ['Roboto', 'sans-serif'],
       },
       fontSize: {

@@ -7,8 +7,14 @@ const ImageBlockServer: React.FC<ImageType> = ({ image }) => {
   const altText = typeof image === 'string' ? 'Image' : image?.alt || 'Image'
 
   return (
-    <div className="flex justify-center">
-      <Image src={imageUrl} alt={altText} width={500} height={500} />
+    <div className="flex justify-center w-[700px] h-[500px] rounded-xl overflow-hidden">
+      <Image
+        src={imageUrl}
+        alt={altText}
+        width={700}
+        height={500}
+        className="object-cover w-full h-full"
+      />
     </div>
   )
 }
