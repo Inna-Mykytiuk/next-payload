@@ -51,13 +51,15 @@ export default async function PostsPage() {
                 className="border rounded-lg p-4 block hover:shadow-lg transition-shadow"
               >
                 {imageUrl && (
-                  <Image
-                    src={imageUrl}
-                    alt={post.title}
-                    width={400}
-                    height={200}
-                    className="rounded-lg my-2"
-                  />
+                  <div className="flex justify-center w-full h-full xl:w-[400px] xl:h-[200px] rounded-xl overflow-hidden shadow-lg mb-10 mx-auto">
+                    <Image
+                      src={imageUrl}
+                      alt={post.title}
+                      width={400}
+                      height={200}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
                 )}
                 <h2 className="text-xl font-bold">{post.title}</h2>
                 <p className="text-gray-600">{post.author}</p>
