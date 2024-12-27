@@ -12,7 +12,7 @@ export default async function HeaderServer() {
   const logoAlt = typeof header?.logo !== 'string' && header?.logo?.alt ? header.logo.alt : 'logo'
 
   return (
-    <header className="bg-blue-300 w-full py-4">
+    <header className="bg-blue-300 w-full py-3 shadow-md">
       <div className="container">
         <div className="flex items-center justify-between">
           {logoSrc && (
@@ -30,7 +30,11 @@ export default async function HeaderServer() {
 
           <div className="flex gap-4">
             {header?.nav?.map((item) => (
-              <Link key={item.id} href={item.link || ''} className="">
+              <Link
+                key={item.id}
+                href={item.link || ''}
+                className="uppercase font-medium hover:text-white transition-all duration-300 ease-in-out"
+              >
                 {item.label}
               </Link>
             ))}

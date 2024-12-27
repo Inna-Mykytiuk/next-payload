@@ -1,10 +1,10 @@
+import React from 'react'
+import Link from 'next/link'
 import config from '@payload-config'
 import { getPayload } from 'payload'
-import React from 'react'
 import type { Post as PostType } from '@/payload-types'
 import Image from 'next/image'
-import RichTextBlockServer from '@/blocks/richtext/Server'
-import Link from 'next/link' // Імпортуємо Link для маршрутизації
+// import RichTextBlockServer from '@/blocks/richtext/Server'
 
 async function fetchPosts(): Promise<PostType[]> {
   const payload = await getPayload({ config })
@@ -14,7 +14,7 @@ async function fetchPosts(): Promise<PostType[]> {
     limit: 1000,
   })
 
-  console.log('Fetched posts:', result.docs)
+  // console.log('Fetched posts:', result.docs)
 
   return result.docs || []
 }
@@ -33,7 +33,7 @@ export default async function PostsPage() {
   }
 
   return (
-    <section className="w-full h-full pt-[100px]">
+    <section className="w-full h-full pt-[60px] pb-[80px]">
       <div className="container">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {posts.map((post) => {
@@ -47,10 +47,9 @@ export default async function PostsPage() {
             return (
               <Link
                 key={post.id}
-                href={`/posts/${post.slug}`} // Додаємо динамічне посилання
+                href={`/posts/${post.slug}`}
                 className="border rounded-lg p-4 block hover:shadow-lg transition-shadow"
               >
-                <h2 className="text-xl font-bold">{post.title}</h2>
                 {imageUrl && (
                   <Image
                     src={imageUrl}
@@ -60,13 +59,14 @@ export default async function PostsPage() {
                     className="rounded-lg my-2"
                   />
                 )}
+                <h2 className="text-xl font-bold">{post.title}</h2>
                 <p className="text-gray-600">{post.author}</p>
                 <p className="text-gray-500 text-sm">{postDate}</p>
-                <RichTextBlockServer
+                {/* <RichTextBlockServer
                   content={post.content}
                   className="text-sm text-gray-500 mt-2"
                   blockType="richtext"
-                />
+                /> */}
               </Link>
             )
           })}

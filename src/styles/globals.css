@@ -3,3 +3,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+}
+
+.title {
+  @apply font-unbound text-[32px] md:text-[48px] xl:text-[52px] font-bold leading-tight;
+}
+
+.text {
+  @apply text-lg font-normal;
+}

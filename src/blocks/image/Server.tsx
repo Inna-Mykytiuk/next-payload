@@ -1,13 +1,13 @@
 import React from 'react'
 import Image from 'next/image'
-import { ImageType } from 'commonTypes/types'
+import { ImageType } from '../../commonTypes/types'
 
 const ImageBlockServer: React.FC<ImageType> = ({ image }) => {
   const imageUrl = typeof image === 'string' ? image : image?.url || ''
   const altText = typeof image === 'string' ? 'Image' : image?.alt || 'Image'
 
   return (
-    <div className="flex justify-center w-full h-full xl:w-[700px] xl:h-[500px] rounded-xl overflow-hidden">
+    <div className="flex justify-center w-full h-full xl:w-[700px] xl:h-[500px] rounded-xl overflow-hidden shadow-lg">
       <Image
         src={imageUrl}
         alt={altText}

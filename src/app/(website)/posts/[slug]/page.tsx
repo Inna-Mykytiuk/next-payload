@@ -10,7 +10,7 @@ async function fetchPost(slug: string): Promise<PostType | null> {
   const result = await payload.find({
     collection: 'posts',
     where: {
-      slug: { equals: slug }, // Фільтруємо пост за slug
+      slug: { equals: slug },
     },
     limit: 1,
   })
@@ -22,7 +22,6 @@ interface PostPageProps {
   params: { slug: string }
 }
 
-// Використовуємо асинхронне завантаження даних
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params
   if (!slug) {
@@ -33,7 +32,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
   if (!post) {
     return (
-      <section className="w-full h-full pt-[100px]">
+      <section className="w-full h-full ">
         <div className="container">
           <p className="text-center text-lg font-bold">Post not found</p>
         </div>
@@ -49,10 +48,9 @@ export default async function PostPage({ params }: PostPageProps) {
   })
 
   return (
-    <section className="w-full h-full pt-[100px]">
+    <section className="w-full h-full pt-[60px] pb-[80px]">
       <div className="container">
         <article className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
           {imageUrl && (
             <Image
               src={imageUrl}
@@ -62,8 +60,9 @@ export default async function PostPage({ params }: PostPageProps) {
               className="rounded-lg mb-4"
             />
           )}
+          <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
           <p className="text-gray-600 mb-2">Author: {post.author}</p>
-          <p className="text-gray-500 text-sm mb-6">Published on: {postDate}</p>
+          <p className="text-gray-500 text-sm mb-8">Published on: {postDate}</p>
           <RichTextBlockServer
             content={post.content}
             className="text-lg text-gray-700"

@@ -12,15 +12,19 @@ export default async function FooterServer() {
   const logoAlt = typeof footer?.logo !== 'string' && footer?.logo?.alt ? footer.logo.alt : 'logo'
 
   return (
-    <footer className="bg-blue-300 w-full py-4 mt-auto">
+    <footer className="bg-blue-300 w-full py-10 mt-auto">
       <div className="container">
         <div className="flex flex-col md:flex-row items-center justify-between">
-          <div className="flex flex-col items-center md:flex-row gap-4 md:gap-0 mb-4 md:mb-0 justify-between w-full">
+          <div className="flex flex-col items-center md:flex-row gap-4 md:gap-0 mb-4 xl:max-w-[50%] md:mb-0 justify-between w-full">
             <p className="text-center md:text-left">{footer?.copyright}</p>
 
             <div className="flex  gap-4">
               {footer?.nav?.map((item) => (
-                <Link key={item.id} href={item.link || ''} className="">
+                <Link
+                  key={item.id}
+                  href={item.link || ''}
+                  className="uppercase font-medium hover:text-white transition-all duration-300 ease-in-out"
+                >
                   {item.label}
                 </Link>
               ))}

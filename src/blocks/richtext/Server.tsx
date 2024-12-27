@@ -1,5 +1,5 @@
 import React, { JSX } from 'react'
-import { RichTextType } from 'commonTypes/types'
+import { RichTextType } from '../../commonTypes/types'
 
 interface RichTextBlockServerProps extends RichTextType {
   className?: string
@@ -20,12 +20,13 @@ const RichTextBlockServer: React.FC<RichTextBlockServerProps> = ({ content, clas
         const { type, tag, text, children: nestedChildren } = child
 
         if (type === 'text' && text) {
-          return <span key={index}>{text}</span>
+          // Повертаємо текст напряму без обгортки в <span>
+          return <React.Fragment key={index}>{text}</React.Fragment>
         }
 
         if (type === 'heading' && tag) {
           const headingLevels: Record<'h1' | 'h2' | 'h3' | 'h4', string> = {
-            h1: 'font-bold text-2xl my-4',
+            h1: 'title',
             h2: 'font-semibold text-xl my-3',
             h3: 'font-medium text-lg my-2',
             h4: 'font-medium text-md my-1',
@@ -43,7 +44,7 @@ const RichTextBlockServer: React.FC<RichTextBlockServerProps> = ({ content, clas
 
         if (type === 'paragraph') {
           return (
-            <p key={index} className="my-4">
+            <p key={index} className="text font-poppins">
               {nestedChildren ? renderChildren(nestedChildren) : null}
             </p>
           )
