@@ -54,9 +54,9 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
   }
 
   return (
-    <section className="w-full h-full pt-[100px]">
+    <section className="w-full h-full py-[40px] xl:pt-[140px]">
       <div className="container">
-        <div className="flex justify-between">
+        <div className="flex flex-col xl:items-center gap-8 xl:gap-0 xl:flex-row justify-between">
           <RenderBlocks blocks={page.layout} />
         </div>
       </div>

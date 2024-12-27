@@ -2,7 +2,7 @@ import React, { JSX } from 'react'
 import { RichTextType } from 'commonTypes/types'
 
 interface RichTextBlockServerProps extends RichTextType {
-  className?: string // Додано проп для стилів
+  className?: string
 }
 
 const RichTextBlockServer: React.FC<RichTextBlockServerProps> = ({ content, className }) => {
