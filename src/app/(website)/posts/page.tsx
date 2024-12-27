@@ -4,6 +4,7 @@ import React from 'react'
 import type { Post as PostType } from '@/payload-types'
 import Image from 'next/image'
 import RichTextBlockServer from '@/blocks/richtext/Server'
+import Link from 'next/link' // Імпортуємо Link для маршрутизації
 
 async function fetchPosts(): Promise<PostType[]> {
   const payload = await getPayload({ config })
@@ -44,7 +45,11 @@ export default async function PostsPage() {
             })
 
             return (
-              <div key={post.id} className="border rounded-lg p-4">
+              <Link
+                key={post.id}
+                href={`/posts/${post.slug}`} // Додаємо динамічне посилання
+                className="border rounded-lg p-4 block hover:shadow-lg transition-shadow"
+              >
                 <h2 className="text-xl font-bold">{post.title}</h2>
                 {imageUrl && (
                   <Image
@@ -62,7 +67,7 @@ export default async function PostsPage() {
                   className="text-sm text-gray-500 mt-2"
                   blockType="richtext"
                 />
-              </div>
+              </Link>
             )
           })}
         </div>
