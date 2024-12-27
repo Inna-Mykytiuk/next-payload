@@ -50,15 +50,17 @@ export default async function PostPage({ params }: PostPageProps) {
   return (
     <section className="w-full h-full pt-[60px] pb-[80px]">
       <div className="container">
-        <article className="max-w-2xl mx-auto">
+        <article className="mx-auto xl:max-w-[900px]">
           {imageUrl && (
-            <Image
-              src={imageUrl}
-              alt={post.title}
-              width={800}
-              height={400}
-              className="rounded-lg mb-4"
-            />
+            <div className="flex justify-center w-full h-full xl:w-[900px] xl:h-[500px] rounded-xl overflow-hidden shadow-lg mb-10">
+              <Image
+                src={imageUrl}
+                alt={post.title}
+                width={900}
+                height={500}
+                className="object-cover w-full h-full"
+              />
+            </div>
           )}
           <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
           <p className="text-gray-600 mb-2">Author: {post.author}</p>
