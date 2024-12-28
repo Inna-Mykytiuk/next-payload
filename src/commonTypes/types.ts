@@ -1,6 +1,5 @@
 import { Media } from '@/payload-types'
 
-// Тип для Cover блоку
 export type CoverType = {
   title: string
   subtitle: string
@@ -9,7 +8,6 @@ export type CoverType = {
   blockType: 'cover'
 }
 
-// Тип для RichText блоку
 export type RichTextType = {
   content: {
     root: {
@@ -30,7 +28,6 @@ export type RichTextType = {
   blockType: 'richtext'
 }
 
-// Тип для Image блоку
 export type ImageType = {
   image: string | Media
   id?: string | null
