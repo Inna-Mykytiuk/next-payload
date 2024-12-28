@@ -18,13 +18,8 @@ async function fetchPost(slug: string): Promise<PostType | null> {
   return result.docs[0] || null
 }
 
-interface PostPageProps {
-  params: Promise<{ slug: string }> // Типизовано як Promise
-}
-
-export default async function PostPage({ params }: PostPageProps) {
-  const resolvedParams = await params // Очікуємо результат Promise
-  const { slug } = resolvedParams
+export default async function PostPage({ params }: { params: Promise<{ slug?: string }> }) {
+  const { slug } = await params
 
   if (!slug) {
     throw new Error('Slug not found in params')
