@@ -23,7 +23,7 @@ interface PostPageProps {
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const { slug } = await params
+  const { slug } = params
   if (!slug) {
     throw new Error('Slug not found in params')
   }
@@ -40,7 +40,11 @@ export default async function PostPage({ params }: PostPageProps) {
     )
   }
 
-  const imageUrl = typeof post.image === 'string' ? post.image : post.image?.url || ''
+  let imageUrl = post.image ? (typeof post.image === 'string' ? post.image : post.image.url) : ''
+
+  if (imageUrl && !imageUrl.startsWith('http')) {
+    imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${imageUrl}`
+  }
   const postDate = new Date(post.createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
