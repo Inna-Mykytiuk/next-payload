@@ -55,7 +55,9 @@ const RichTextBlockServer: React.FC<RichTextBlockServerProps> = ({ content, clas
             return (
               <ul key={index} className="pl-5 mt-4">
                 {nestedChildren
-                  ? renderChildren(nestedChildren.filter((child) => child.type === 'list-item'))
+                  ? nestedChildren.map((child, childIndex) => (
+                      <li key={`ol-item-${index}-${childIndex}`}>{renderChildren([child])}</li>
+                    ))
                   : null}
               </ul>
             )
@@ -63,7 +65,11 @@ const RichTextBlockServer: React.FC<RichTextBlockServerProps> = ({ content, clas
           if (tag === 'ol') {
             return (
               <ol key={index} className="list-decimal pl-5 mt-4">
-                {nestedChildren ? renderChildren(nestedChildren) : null}
+                {nestedChildren
+                  ? nestedChildren.map((child, childIndex) => (
+                      <li key={`ol-item-${index}-${childIndex}`}>{renderChildren([child])}</li>
+                    ))
+                  : null}
               </ol>
             )
           }

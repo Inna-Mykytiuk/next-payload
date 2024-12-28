@@ -1,31 +1,39 @@
-import config from '@payload-config'
+import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React from 'react'
-import type { Post as PostType } from '@/payload-types'
+import React, { cache } from 'react'
+import type { Post as PostPage } from '@/payload-types'
 import Image from 'next/image'
 import RichTextBlockServer from '@/blocks/richtext/Server'
 
-async function fetchPost(slug: string): Promise<PostType | null> {
-  const payload = await getPayload({ config })
-  const result = await payload.find({
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise })
+  const posts = await payload.find({
     collection: 'posts',
-    where: {
-      slug: { equals: slug },
+    draft: false,
+    limit: 1000,
+    overrideAccess: false,
+    pagination: false,
+    select: {
+      slug: true,
     },
-    limit: 1,
   })
 
-  return result.docs[0] || null
+  const params = posts.docs.map(({ slug }) => {
+    return { slug }
+  })
+
+  return params
 }
 
-export default async function PostPage({ params }: { params: Promise<{ slug?: string }> }) {
-  const { slug = 'index' } = await params
+type Args = {
+  params: Promise<{
+    slug?: string
+  }>
+}
 
-  if (!slug) {
-    throw new Error('Slug not found in params')
-  }
-
-  const post = await fetchPost(slug)
+export default async function PostPage({ params: paramsPromise }: Args) {
+  const { slug = '' } = await paramsPromise
+  const post = await queryPostBySlug({ slug })
 
   if (!post) {
     return (
@@ -36,12 +44,8 @@ export default async function PostPage({ params }: { params: Promise<{ slug?: st
       </section>
     )
   }
+  const imageUrl = typeof post.image === 'string' ? post.image : post.image?.url || ''
 
-  let imageUrl = post.image ? (typeof post.image === 'string' ? post.image : post.image.url) : ''
-
-  if (imageUrl && !imageUrl.startsWith('http')) {
-    imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${imageUrl}`
-  }
   const postDate = new Date(post.createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -76,3 +80,20 @@ export default async function PostPage({ params }: { params: Promise<{ slug?: st
     </section>
   )
 }
+
+const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
+  const payload = await getPayload({ config: configPromise })
+
+  const result = await payload.find({
+    collection: 'posts',
+    limit: 1,
+    pagination: false,
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+  })
+
+  return result.docs?.[0] || null
+})

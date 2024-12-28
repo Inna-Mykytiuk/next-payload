@@ -1,42 +1,25 @@
 import React from 'react'
 import Link from 'next/link'
-import config from '@payload-config'
 import { getPayload } from 'payload'
-import type { Post as PostType } from '@/payload-types'
 import Image from 'next/image'
-// import RichTextBlockServer from '@/blocks/richtext/Server'
-
-async function fetchPosts(): Promise<PostType[]> {
-  const payload = await getPayload({ config })
-  const result = await payload.find({
-    collection: 'posts',
-    draft: false,
-    limit: 1000,
-  })
-
-  // console.log('Fetched posts:', result.docs)
-
-  return result.docs || []
-}
+import configPromise from '@payload-config'
+import { Post } from '@/commonTypes/types'
 
 export default async function PostsPage() {
-  const posts = await fetchPosts()
+  const payload = await getPayload({ config: configPromise })
 
-  if (!posts.length) {
-    return (
-      <section className="w-full h-full pt-[100px]">
-        <div className="container">
-          <p className="text-center text-lg font-bold">No posts available</p>
-        </div>
-      </section>
-    )
-  }
+  const { docs: posts } = await payload.find({
+    collection: 'posts',
+    depth: 1,
+    limit: 12,
+    overrideAccess: false,
+  })
 
   return (
     <section className="w-full h-full pt-[60px] pb-[80px]">
       <div className="container">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {posts.map((post) => {
+          {posts.map((post: Post) => {
             const imageUrl = typeof post.image === 'string' ? post.image : post.image?.url || ''
             const postDate = new Date(post.createdAt).toLocaleDateString('en-US', {
               year: 'numeric',
@@ -64,11 +47,6 @@ export default async function PostsPage() {
                 <h2 className="text-xl font-bold">{post.title}</h2>
                 <p className="text-gray-600">{post.author}</p>
                 <p className="text-gray-500 text-sm">{postDate}</p>
-                {/* <RichTextBlockServer
-                  content={post.content}
-                  className="text-sm text-gray-500 mt-2"
-                  blockType="richtext"
-                /> */}
               </Link>
             )
           })}

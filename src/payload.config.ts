@@ -35,6 +35,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Pages, Posts],
+  // cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   editor: lexicalEditor(),
   secret: payloadSecret,

@@ -37,3 +37,14 @@ export type ImageType = {
   blockName?: string | null
   blockType: 'image'
 }
+
+export type Post = {
+  id: string
+  slug: string
+  image: string | Media
+  author: string
+  title: string
+  createdAt: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  content: any
+}

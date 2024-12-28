@@ -3,6 +3,9 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
+  access: {
+    read: () => true, // Дозволити читання всім
+  },
   fields: [
     {
       name: 'slug',
