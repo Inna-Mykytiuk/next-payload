@@ -38,7 +38,7 @@ export default async function PostsPage() {
                 className="border rounded-lg p-4 flex flex-col hover:shadow-lg transition-shadow w-full h-full"
               >
                 {imageUrl && (
-                  <div className="w-full h-auto rounded-xl overflow-hidden shadow-lg mb-4">
+                  <div className="w-full h-auto rounded-xl overflow-hidden mb-4">
                     <Image
                       src={imageUrl}
                       alt={post.title}

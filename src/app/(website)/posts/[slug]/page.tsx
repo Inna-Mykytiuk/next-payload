@@ -67,7 +67,7 @@ export default async function PostPage({ params: paramsPromise }: Args) {
               />
             </div>
           )}
-          <h1 className="text-2xl md:text-4xl font-bold mb-4">{post.title}</h1>
+          <h2 className="text-2xl md:text-4xl font-bold mb-4">{post.title}</h2>
           <p className="text-gray-600 mb-2">Author: {post.author}</p>
           <p className="text-gray-500 text-sm mb-8">Published on: {postDate}</p>
           <RichTextBlockServer
