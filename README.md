@@ -68,4 +68,4 @@ To run Payload Blog locally, follow these steps:
 
 Enjoy your journey through Payload Blog and stay connected with the latest posts!
 
-![preview](https://github.com/Inna-Mykytiuk/next-payload/blob/src/assets/11.jpg)
+![preview](https://github.com/Inna-Mykytiuk/next-payload/blob/main/src/assets/11.jpg)
