@@ -57,13 +57,13 @@ export default async function PostPage({ params: paramsPromise }: Args) {
       <div className="container">
         <article className="mx-auto xl:max-w-[900px]">
           {imageUrl && (
-            <div className="flex justify-center w-full h-full xl:w-[900px] xl:h-[500px] rounded-xl overflow-hidden shadow-lg mb-10">
+            <div className="flex justify-center w-full h-full xl:w-[900px] xl:h-[350px] rounded-xl overflow-hidden shadow-lg mb-10">
               <Image
                 src={imageUrl}
                 alt={post.title}
                 width={900}
-                height={500}
-                className="object-cover w-full h-full"
+                height={350}
+                className="object-cover  w-full h-full"
               />
             </div>
           )}
