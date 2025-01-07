@@ -20,19 +20,18 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
 }
 
 export const generateMeta = async (args: {
-  doc: Partial<Page> | Partial<Post>
+  meta: Partial<Page['meta']> | Partial<Post['meta']>
 }): Promise<Metadata> => {
-  const { doc } = args || {}
+  const { meta } = args || {}
 
-  const ogImage = getImageURL(doc?.meta?.image)
+  const ogImage = getImageURL(meta?.image)
 
-  const title = doc?.meta?.title ? doc?.meta?.title + ' | Page' : 'Payload Blog Template'
+  const title = meta?.title ? meta?.title : 'Payload Website Template'
 
   return {
-    title,
-    description: doc?.meta?.description,
+    description: meta?.description,
     openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
+      description: meta?.description || '',
       images: ogImage
         ? [
             {
@@ -41,7 +40,8 @@ export const generateMeta = async (args: {
           ]
         : undefined,
       title,
-      url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
+      url: '/', // Оскільки ми не маємо доступу до `slug` у `meta`
     }),
+    title,
   }
 }

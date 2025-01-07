@@ -4,7 +4,26 @@ import React, { cache } from 'react'
 import type { Post as PostPage } from '@/payload-types'
 import Image from 'next/image'
 import RichTextBlockServer from '@/blocks/richtext/Server'
+import { generateMeta } from '@/utils/generateMeta' // Імпортуємо функцію для генерації метаданих
+import type { Metadata } from 'next' // Імпортуємо тип Metadata
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+
+  const post = await queryPostBySlug({ slug })
+
+  if (!post || !post.meta) {
+    return generateMeta({ meta: {} })
+  }
+
+  return generateMeta({ meta: post.meta })
+}
+
+// Функція для генерації статичних параметрів
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
   const posts = await payload.find({
@@ -13,28 +32,29 @@ export async function generateStaticParams() {
     limit: 1000,
     overrideAccess: false,
     pagination: false,
-    select: {
-      slug: true,
-    },
   })
 
-  const params = posts.docs.map(({ slug }) => {
-    return { slug }
+  // Повертаємо масив параметрів для статичної генерації
+  const params = posts.docs.map((post) => {
+    return { slug: post.content.slug }
   })
 
   return params
 }
 
+// Тип для параметрів сторінки
 type Args = {
-  params: Promise<{
-    slug?: string
-  }>
+  params: {
+    slug: string
+  }
 }
 
-export default async function PostPage({ params: paramsPromise }: Args) {
-  const { slug = '' } = await paramsPromise
+// Основна компонента сторінки поста
+export default async function PostPage({ params }: Args) {
+  const { slug } = await params
   const post = await queryPostBySlug({ slug })
 
+  // Якщо пост не знайдено, повертаємо повідомлення про помилку
   if (!post) {
     return (
       <section className="w-full h-full ">
@@ -44,14 +64,19 @@ export default async function PostPage({ params: paramsPromise }: Args) {
       </section>
     )
   }
-  const imageUrl = typeof post.image === 'string' ? post.image : post.image?.url || ''
 
+  // Отримуємо URL зображення
+  const imageUrl =
+    typeof post.content.image === 'string' ? post.content.image : post.content.image?.url || ''
+
+  // Форматуємо дату публікації
   const postDate = new Date(post.createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   })
 
+  // Повертаємо розмітку сторінки поста
   return (
     <section className="w-full h-full pt-[60px] pb-[80px]">
       <div className="container">
@@ -60,18 +85,18 @@ export default async function PostPage({ params: paramsPromise }: Args) {
             <div className="flex justify-center w-full h-full xl:w-[900px] xl:h-[350px] rounded-xl overflow-hidden shadow-lg mb-10">
               <Image
                 src={imageUrl}
-                alt={post.title}
+                alt={post.content.title}
                 width={900}
                 height={350}
                 className="object-cover  w-full h-full"
               />
             </div>
           )}
-          <h2 className="text-2xl md:text-4xl font-bold mb-4">{post.title}</h2>
-          <p className="text-gray-600 mb-2">Author: {post.author}</p>
+          <h2 className="text-2xl md:text-4xl font-bold mb-4">{post.content.title}</h2>
+          <p className="text-gray-600 mb-2">Author: {post.content.author}</p>
           <p className="text-gray-500 text-sm mb-8">Published on: {postDate}</p>
           <RichTextBlockServer
-            content={post.content}
+            content={post.content.content}
             className="text-lg text-gray-700"
             blockType="richtext"
           />
@@ -81,6 +106,7 @@ export default async function PostPage({ params: paramsPromise }: Args) {
   )
 }
 
+// Функція для отримання поста за slug
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
   const payload = await getPayload({ config: configPromise })
 
@@ -89,7 +115,7 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
     limit: 1,
     pagination: false,
     where: {
-      slug: {
+      'content.slug': {
         equals: slug,
       },
     },

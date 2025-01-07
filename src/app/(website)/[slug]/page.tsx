@@ -17,7 +17,7 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     collection: 'pages',
     limit: 1,
     where: {
-      slug: {
+      'content.slug': {
         equals: parsedSlug,
       },
     },
@@ -33,18 +33,13 @@ export async function generateStaticParams() {
     draft: false,
     limit: 1000,
     pagination: false,
-    select: {
-      slug: true,
-    },
   })
 
   return (
     pages.docs
-      ?.filter((doc) => {
-        return doc.slug !== 'home'
-      })
+      ?.filter((doc) => doc.content?.slug !== 'home')
       .map((doc) => ({
-        slug: doc.slug,
+        slug: doc.content?.slug,
       })) || []
   )
 }
@@ -65,7 +60,7 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
       <div className="container relative">
         {/* <div className="absolute left-0 top-[90px] w-full xl:w-[700px] h-[100px] bg-[#93c4fda4]"></div> */}
         <div className="flex flex-col xl:items-center gap-8 xl:gap-0 xl:flex-row justify-between">
-          <RenderBlocks blocks={page.layout} />
+          <RenderBlocks blocks={page.content.layout} />
         </div>
       </div>
     </section>
@@ -78,16 +73,12 @@ export async function generateMetadata({
   params: Promise<{ slug?: string }>
 }): Promise<Metadata> {
   const { slug = 'home' } = await params
-  console.log('Resolved slug:', slug)
 
   const page = await queryPageBySlug({ slug })
 
-  console.log('page', page)
-
   if (!page || !page.meta) {
-    console.log('No page or meta data found, returning default meta')
-    return generateMeta({ doc: {} })
+    return generateMeta({ meta: {} })
   }
 
-  return generateMeta({ doc: page })
+  return generateMeta({ meta: page.meta })
 }

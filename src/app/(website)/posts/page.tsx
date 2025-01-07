@@ -3,7 +3,9 @@ import Link from 'next/link'
 import { getPayload } from 'payload'
 import Image from 'next/image'
 import configPromise from '@payload-config'
-import { Post } from '@/commonTypes/types'
+import type { Post as PostType } from '@/payload-types'
+
+// import { Metadata } from 'next'
 
 export default async function PostsPage() {
   const payload = await getPayload({ config: configPromise })
@@ -19,8 +21,11 @@ export default async function PostsPage() {
     <section className="w-full h-full pt-[60px] pb-[80px]">
       <div className="container">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {posts.map((post: Post) => {
-            const imageUrl = typeof post.image === 'string' ? post.image : post.image?.url || ''
+          {posts.map((post: PostType) => {
+            const imageUrl =
+              typeof post.content.image === 'string'
+                ? post.content?.image
+                : post.content?.image?.url || ''
             const postDate = new Date(post.createdAt).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
@@ -34,14 +39,14 @@ export default async function PostsPage() {
             return (
               <Link
                 key={post.id}
-                href={`/posts/${post.slug}`}
+                href={`/posts/${post.content.slug}`}
                 className="border rounded-lg p-4 flex flex-col hover:shadow-lg transition-shadow w-full h-full"
               >
                 {imageUrl && (
                   <div className="w-full h-auto rounded-xl overflow-hidden mb-4">
                     <Image
                       src={imageUrl}
-                      alt={post.title}
+                      alt={post.content.title}
                       width={400}
                       height={200}
                       className="object-cover w-full h-full"
@@ -49,8 +54,8 @@ export default async function PostsPage() {
                   </div>
                 )}
                 <div className="flex flex-col flex-grow">
-                  <h2 className="text-xl font-bold">{post.title}</h2>
-                  <p className="text-gray-600">{post.author}</p>
+                  <h2 className="text-xl font-bold">{post.content.title}</h2>
+                  <p className="text-gray-600">{post.content.author}</p>
                   <p className="text-gray-500 text-sm mt-auto">
                     {postDate} at {postTime}
                   </p>

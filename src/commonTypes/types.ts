@@ -35,13 +35,22 @@ export type ImageType = {
   blockType: 'image'
 }
 
-export type Post = {
+export interface Post {
   id: string
-  slug: string
-  image: string | Media
-  author: string
-  title: string
+  content: {
+    slug: string
+    image: string | Media // Media - це тип для медіа-файлів
+    author: string
+    title: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    content: any
+    publishedAt?: string
+  }
+  meta?: {
+    title?: string
+    description?: string
+    image?: string | Media
+  }
   createdAt: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  content: any
+  updatedAt: string
 }

@@ -15,30 +15,36 @@ export const Pages: CollectionConfig = {
   slug: 'pages',
   fields: [
     {
-      name: 'name',
-      label: 'Name',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'slug',
-      label: 'Slug',
-      type: 'text',
-      required: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'layout',
-      label: 'Layout',
-      type: 'blocks',
-      blocks: [Cover, RichText, Image],
-      required: true,
-    },
-    {
       type: 'tabs',
       tabs: [
+        {
+          name: 'content',
+          label: 'Content',
+          fields: [
+            {
+              name: 'name',
+              label: 'Name',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'slug',
+              label: 'Slug',
+              type: 'text',
+              required: true,
+              admin: {
+                position: 'sidebar',
+              },
+            },
+            {
+              name: 'layout',
+              label: 'Layout',
+              type: 'blocks',
+              blocks: [Cover, RichText, Image],
+              required: true,
+            },
+          ],
+        },
         {
           name: 'meta',
           label: 'SEO',
@@ -54,13 +60,9 @@ export const Pages: CollectionConfig = {
             MetaImageField({
               relationTo: 'media',
             }),
-
             MetaDescriptionField({}),
             PreviewField({
-              // if the `generateUrl` function is configured
               hasGenerateFn: true,
-
-              // field paths to match the target field for data
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
             }),

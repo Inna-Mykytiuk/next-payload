@@ -168,43 +168,45 @@ export interface Media {
  */
 export interface Page {
   id: string;
-  name: string;
-  slug: string;
-  layout: (
-    | {
-        title: string;
-        subtitle: string;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'cover';
-      }
-    | {
-        content: {
-          root: {
-            type: string;
-            children: {
+  content: {
+    name: string;
+    slug: string;
+    layout: (
+      | {
+          title: string;
+          subtitle: string;
+          id?: string | null;
+          blockName?: string | null;
+          blockType: 'cover';
+        }
+      | {
+          content: {
+            root: {
               type: string;
+              children: {
+                type: string;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
               version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
+            };
+            [k: string]: unknown;
           };
-          [k: string]: unknown;
-        };
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'richtext';
-      }
-    | {
-        image: string | Media;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'image';
-      }
-  )[];
+          id?: string | null;
+          blockName?: string | null;
+          blockType: 'richtext';
+        }
+      | {
+          image: string | Media;
+          id?: string | null;
+          blockName?: string | null;
+          blockType: 'image';
+        }
+    )[];
+  };
   meta?: {
     title?: string | null;
     image?: (string | null) | Media;
@@ -219,26 +221,28 @@ export interface Page {
  */
 export interface Post {
   id: string;
-  slug: string;
-  image: string | Media;
-  author: string;
-  title: string;
   content: {
-    root: {
-      type: string;
-      children: {
+    slug: string;
+    image: string | Media;
+    author: string;
+    title: string;
+    content: {
+      root: {
         type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
         version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
+      };
+      [k: string]: unknown;
     };
-    [k: string]: unknown;
+    publishedAt?: string | null;
   };
-  publishedAt?: string | null;
   meta?: {
     title?: string | null;
     image?: (string | null) | Media;
@@ -425,32 +429,36 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
-  name?: T;
-  slug?: T;
-  layout?:
+  content?:
     | T
     | {
-        cover?:
+        name?: T;
+        slug?: T;
+        layout?:
           | T
           | {
-              title?: T;
-              subtitle?: T;
-              id?: T;
-              blockName?: T;
-            };
-        richtext?:
-          | T
-          | {
-              content?: T;
-              id?: T;
-              blockName?: T;
-            };
-        image?:
-          | T
-          | {
-              image?: T;
-              id?: T;
-              blockName?: T;
+              cover?:
+                | T
+                | {
+                    title?: T;
+                    subtitle?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              richtext?:
+                | T
+                | {
+                    content?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
+              image?:
+                | T
+                | {
+                    image?: T;
+                    id?: T;
+                    blockName?: T;
+                  };
             };
       };
   meta?:
@@ -468,12 +476,16 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
-  slug?: T;
-  image?: T;
-  author?: T;
-  title?: T;
-  content?: T;
-  publishedAt?: T;
+  content?:
+    | T
+    | {
+        slug?: T;
+        image?: T;
+        author?: T;
+        title?: T;
+        content?: T;
+        publishedAt?: T;
+      };
   meta?:
     | T
     | {
