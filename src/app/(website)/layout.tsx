@@ -1,3 +1,7 @@
+import type { Metadata } from 'next'
+import { mergeOpenGraph } from '@/utils/mergeOpenGraph'
+import { getServerSideURL } from '@/utils/getURL'
+
 import '@/styles/globals.css'
 
 import HeaderServer from '@/blocks/global/Header/Server'
@@ -17,4 +21,9 @@ export default function RootLayout({
       </body>
     </html>
   )
+}
+
+export const metadata: Metadata = {
+  metadataBase: new URL(getServerSideURL()),
+  openGraph: mergeOpenGraph(),
 }

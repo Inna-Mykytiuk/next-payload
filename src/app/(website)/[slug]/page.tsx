@@ -1,3 +1,6 @@
+import type { Metadata } from 'next'
+import { generateMeta } from '@/utils/generateMeta'
+
 import config from '@payload-config'
 import { getPayload } from 'payload'
 import React, { cache } from 'react'
@@ -29,12 +32,16 @@ export async function generateStaticParams() {
     collection: 'pages',
     draft: false,
     limit: 1000,
+    pagination: false,
+    select: {
+      slug: true,
+    },
   })
 
   return (
     pages.docs
       ?.filter((doc) => {
-        return doc.slug !== 'index'
+        return doc.slug !== 'home'
       })
       .map((doc) => ({
         slug: doc.slug,
@@ -43,7 +50,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: Promise<{ slug?: string }> }) {
-  const { slug = 'index' } = await params
+  const { slug = 'home' } = await params
 
   const page: PageType | null = await queryPageBySlug({
     slug,
@@ -63,4 +70,24 @@ export default async function Page({ params }: { params: Promise<{ slug?: string
       </div>
     </section>
   )
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug?: string }>
+}): Promise<Metadata> {
+  const { slug = 'home' } = await params
+  console.log('Resolved slug:', slug)
+
+  const page = await queryPageBySlug({ slug })
+
+  console.log('page', page)
+
+  if (!page || !page.meta) {
+    console.log('No page or meta data found, returning default meta')
+    return generateMeta({ doc: {} })
+  }
+
+  return generateMeta({ doc: page })
 }
