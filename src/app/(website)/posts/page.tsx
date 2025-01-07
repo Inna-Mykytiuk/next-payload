@@ -3,10 +3,42 @@ import Link from 'next/link'
 import { getPayload } from 'payload'
 import Image from 'next/image'
 import configPromise from '@payload-config'
+import { Metadata } from 'next'
 import type { Post as PostType } from '@/payload-types'
 
-// import { Metadata } from 'next'
+// Генерація метаданих
+export async function generateMetadata(): Promise<Metadata> {
+  const payload = await getPayload({ config: configPromise })
 
+  const { docs: posts } = await payload.find({
+    collection: 'posts',
+    depth: 1,
+    limit: 12,
+    overrideAccess: false,
+  })
+
+  const title = posts.length > 0 ? `All Posts - ${posts[0].content.title}` : 'All Posts'
+  const description = 'Read all posts on our website. Latest posts included.'
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      url: 'https://yourwebsite.com/posts',
+      images: [
+        {
+          url: 'https://yourwebsite.com/default-image.jpg',
+          alt: 'Default image for all posts',
+        },
+      ],
+    },
+  }
+}
+
+// Основна компонента сторінки постів
 export default async function PostsPage() {
   const payload = await getPayload({ config: configPromise })
 

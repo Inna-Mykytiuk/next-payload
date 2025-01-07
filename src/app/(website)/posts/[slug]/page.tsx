@@ -7,22 +7,6 @@ import RichTextBlockServer from '@/blocks/richtext/Server'
 import { generateMeta } from '@/utils/generateMeta' // Імпортуємо функцію для генерації метаданих
 import type { Metadata } from 'next' // Імпортуємо тип Metadata
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}): Promise<Metadata> {
-  const { slug } = await params
-
-  const post = await queryPostBySlug({ slug })
-
-  if (!post || !post.meta) {
-    return generateMeta({ meta: {} })
-  }
-
-  return generateMeta({ meta: post.meta })
-}
-
 // Функція для генерації статичних параметрів
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -44,14 +28,14 @@ export async function generateStaticParams() {
 
 // Тип для параметрів сторінки
 type Args = {
-  params: {
-    slug: string
-  }
+  params: Promise<{
+    slug?: string
+  }>
 }
 
 // Основна компонента сторінки поста
-export default async function PostPage({ params }: Args) {
-  const { slug } = await params
+export default async function PostPage({ params: paramsPromise }: Args) {
+  const { slug = '' } = await paramsPromise
   const post = await queryPostBySlug({ slug })
 
   // Якщо пост не знайдено, повертаємо повідомлення про помилку
@@ -123,3 +107,15 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
 
   return result.docs?.[0] || null
 })
+
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  const { slug = '' } = await paramsPromise
+
+  const post = await queryPostBySlug({ slug })
+
+  if (!post || !post.meta) {
+    return generateMeta({ meta: {} })
+  }
+
+  return generateMeta({ meta: post.meta })
+}
