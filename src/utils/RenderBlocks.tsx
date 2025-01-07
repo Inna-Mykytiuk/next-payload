@@ -4,14 +4,14 @@ import ImageBlockServer from '@/blocks/image/Server'
 import RichTextBlockServer from '@/blocks/richtext/Server'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const blockComponents: Record<Page['layout'][number]['blockType'], React.FC<any>> = {
+const blockComponents: Record<Page['content']['layout'][number]['blockType'], React.FC<any>> = {
   cover: CoverBlockServer,
   image: ImageBlockServer,
   richtext: RichTextBlockServer,
 }
 
 export const RenderBlocks: React.FC<{
-  blocks: Page['layout'][0][]
+  blocks: Page['content']['layout'][0][]
 }> = (props) => {
   const { blocks } = props
 
