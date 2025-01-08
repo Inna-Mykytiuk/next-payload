@@ -14,7 +14,16 @@ export const Posts: CollectionConfig = {
   access: {
     read: () => true,
   },
+  admin: {
+    useAsTitle: 'name',
+  },
   fields: [
+    {
+      name: 'name',
+      label: 'Name',
+      type: 'text',
+      required: true,
+    },
     {
       type: 'tabs',
       tabs: [

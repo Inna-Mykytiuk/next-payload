@@ -168,6 +168,7 @@ export interface Media {
  */
 export interface Page {
   id: string;
+  title: string;
   content: {
     name: string;
     slug: string;
@@ -221,6 +222,7 @@ export interface Page {
  */
 export interface Post {
   id: string;
+  name: string;
   content: {
     slug: string;
     image: string | Media;
@@ -429,6 +431,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
+  title?: T;
   content?:
     | T
     | {
@@ -476,6 +479,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
+  name?: T;
   content?:
     | T
     | {

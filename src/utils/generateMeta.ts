@@ -6,42 +6,42 @@ import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
 
 const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
-  const serverUrl = getServerSideURL()
+    const serverUrl = getServerSideURL()
 
-  let url = serverUrl + '/website-template-OG.webp'
+    let url = serverUrl + '/website-template-OG.webp'
 
-  if (image && typeof image === 'object' && 'url' in image) {
-    const ogUrl = image.sizes?.og?.url
+    if (image && typeof image === 'object' && 'url' in image) {
+        const ogUrl = image.sizes?.og?.url
 
-    url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url
-  }
+        url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url
+    }
 
-  return url
+    return url
 }
 
 export const generateMeta = async (args: {
-  meta: Partial<Page['meta']> | Partial<Post['meta']>
+    meta: Partial<Page['meta']> | Partial<Post['meta']>
 }): Promise<Metadata> => {
-  const { meta } = args || {}
+    const { meta } = args || {}
 
-  const ogImage = getImageURL(meta?.image)
+    const ogImage = getImageURL(meta?.image)
 
-  const title = meta?.title ? meta?.title : 'Payload Website Template'
+    const title = meta?.title ? meta?.title : 'Payload Website Template'
 
-  return {
-    description: meta?.description,
-    openGraph: mergeOpenGraph({
-      description: meta?.description || '',
-      images: ogImage
-        ? [
-            {
-              url: ogImage,
-            },
-          ]
-        : undefined,
-      title,
-      url: '/', // Оскільки ми не маємо доступу до `slug` у `meta`
-    }),
-    title,
-  }
+    return {
+        title,
+        description: meta?.description,
+        openGraph: mergeOpenGraph({
+            description: meta?.description || '',
+            images: ogImage
+                ? [
+                      {
+                          url: ogImage,
+                      },
+                  ]
+                : undefined,
+            title,
+            url: '/', // Оскільки ми не маємо доступу до `slug` у `meta`
+        }),
+    }
 }
